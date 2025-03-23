@@ -7,7 +7,7 @@ MANIPULATED_PROBABILITY = 0.75
 NORMAL_PROBABILITY = 0.5  
 TRANSITION_POINT = 500  # Standardwert, wird durch Benutzereingabe überschrieben
 
-fast_interval = 1  # Standardmodus (0.025s)
+fast_interval = 1  # Standardmodus (1ms)
 current_interval = fast_interval  # Startintervall
 paused = False 
 
