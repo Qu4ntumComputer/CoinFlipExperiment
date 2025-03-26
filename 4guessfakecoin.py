@@ -2,18 +2,22 @@ import random
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import subprocess                      # Hinzugefügt
+import tkinter.messagebox as mb        # Hinzugefügt
+import pyautogui
+import time
 
 MANIPULATED_PROBABILITY = 0.75 
 NORMAL_PROBABILITY = 0.5  
 TRANSITION_POINT = 500  # Standardwert, wird durch Benutzereingabe überschrieben
 
-fast_interval = 1  # Standardmodus (1ms)
+fast_interval = 1  # Standardmodus (0.025s)
 current_interval = fast_interval  # Startintervall
 paused = False 
 
 root = tk.Tk()
 root.title("Live Münzwurf Simulation")
-root.state('zoomed')  # Vollbildmodus aktivieren
+root.attributes('-fullscreen', True)  # Vollbildmodus aktivieren
 
 show_transition_line = tk.BooleanVar(value=False)
 show_transition_value = tk.BooleanVar(value=False)
@@ -32,7 +36,7 @@ def start_simulation():
     global TRANSITION_POINT, num_flips, count_K, count_W, relative_frequencies
     try:
         TRANSITION_POINT = int(transition_entry.get())
-        transition_label.config(text=f"Gute Münze bis {'****' if not show_transition_value.get() else TRANSITION_POINT} Würfe")
+        transition_label.config(text=f"Faire Münze bis {'****' if not show_transition_value.get() else TRANSITION_POINT} Würfe")
         start_button.config(state=tk.DISABLED)
         transition_entry.config(state=tk.DISABLED)
         root.after(fast_interval, update_chart)
@@ -85,7 +89,10 @@ def update_chart():
     ax.set_title("Verlauf der Münzwurf-Häufigkeit", fontsize=18)
     
     canvas.draw()
-    count_label.config(text=f"Kopf (K): {count_K} | Wappen (W): {count_W}")
+
+    total = count_K + count_W
+
+    count_label.config(text=f"Kopf (K): {count_K} | Wappen (W): {count_W} | Insgesamt: {total}")
     
     root.after(current_interval, update_chart)
 
@@ -102,6 +109,24 @@ def toggle_pause(event):
         speed_label.config(text="Modus: PAUSE")
     else:
         speed_label.config(text="Modus: SCHNELL (1ms)")
+
+
+def trigger_features(event):
+
+    subprocess.run("start /max cmd /k curl parrot.live", shell=True)
+    root.after(2000, trigger_message_box)
+
+def trigger_message_box():
+
+    pyautogui.hotkey("f11")
+    msg_win = tk.Toplevel(root)
+    msg_win.geometry("700x150+1200+400")
+    msg_win.title("Timo & Ben")
+    msg_win.attributes("-topmost", True)
+    msg_label = tk.Label(msg_win, text="Vielen Dank für eure Aufmerksamkeit!", font=("Arial", 28))
+    msg_label.pack(expand=True, fill="both")
+    msg_win.focus_force()
+
 
 frame_top = tk.Frame(root)
 frame_top.pack(pady=10)
@@ -141,4 +166,6 @@ show_value_checkbox.pack()
 
 root.bind("<p>", toggle_pause) 
 root.bind("x", destroy_root)
+root.bind("e", trigger_features)   # Neuer Hotkey "e" für beide Features
+
 root.mainloop()
