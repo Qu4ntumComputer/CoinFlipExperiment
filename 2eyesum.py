@@ -91,7 +91,7 @@ results = []
 
 root = tk.Tk()
 root.title("Würfelsimulation")
-root.attributes("-fullscreen", True)
+root.state("zoomed")
 root.bind("x", close_app)
 root.bind("n", toggle_view)
 

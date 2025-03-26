@@ -13,7 +13,7 @@ paused = False
 
 root = tk.Tk()
 root.title("Live Münzwurf Simulation")
-root.attributes('-fullscreen', True)  # Vollbildmodus aktivieren
+root.state('zoomed')  # Vollbildmodus aktivieren
 
 show_transition_line = tk.BooleanVar(value=False)
 show_transition_value = tk.BooleanVar(value=False)

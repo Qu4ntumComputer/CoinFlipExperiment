@@ -1,6 +1,5 @@
 import random
 import tkinter as tk
-from tkinter import ttk
 
 def close_program(event):
     root.destroy()
@@ -128,17 +127,13 @@ human_mode = True
 
 tk.Frame(root).pack(expand=True)
 frame = tk.Frame(root, bg="#ddd", padx=20, pady=20)
-frame.pack()
-
-style = ttk.Style()
-style.configure("TButton", font=("Helvetica", 16), padding=10)
-restart_btn = ttk.Button(root, text="Neustart", command=display_table, style="TButton")
-restart_btn.pack(pady=20)
+frame.pack(fill=tk.BOTH, expand=True)
 
 display_table()
 
 root.bind("x", close_program)
 root.bind("n", toggle_mode)
 root.bind("m", show_message)
+root.bind("r", lambda event: display_table())
 
 root.mainloop()

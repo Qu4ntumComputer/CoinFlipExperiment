@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 is_paused = False
+update_running = False  # Verhindert doppelte Updates
 
 def update_chart():
-    global count_K, count_W, canvas, ax, mode, probabilities, is_paused
+    global count_K, count_W, canvas, ax, mode, probabilities, is_paused, update_running
+
+    if not update_running:
+        return  # Falls das Update gestoppt wurde (z. B. durch Pause)
 
     if not is_paused:
         flip = random.choice(['K', 'W'])
@@ -31,7 +35,6 @@ def update_chart():
             autotext.set_weight("bold")
         ax.set_title("Münzwurf-Verteilung", fontsize=max(20, int(root.winfo_width() * 0.03)))
     else:
-        total = count_K + count_W
         ax.plot(range(1, total + 1), probabilities, label="% Kopf", color="blue")
         ax.axhline(y=50, color="red", linestyle="dashed", label="50% Erwartungswert")
         ax.set_xlabel("Anzahl der Würfe")
@@ -46,9 +49,12 @@ def update_chart():
         font=("Arial", max(16, int(root.winfo_width() * 0.025))),
     )
 
-    root.after(100, update_chart)
+    if update_running:  # Nur wenn nicht gestoppt, soll es weiterlaufen
+        root.after(100, update_chart)
 
-def close_app(event):
+def close_app(event=None):
+    global update_running
+    update_running = False  # Stoppt den Update-Loop
     root.destroy()
 
 def resize(event):
@@ -56,29 +62,32 @@ def resize(event):
     canvas.get_tk_widget().config(width=root.winfo_width(), height=root.winfo_height() - 50)
     canvas.draw()
 
-def switch_chart(event):
+def switch_chart(event=None):
     global mode 
     mode = "line" if mode == "pie" else "pie"
     update_chart()
 
 def start_simulation():
-    global count_K, count_W, probabilities, is_paused
+    global count_K, count_W, probabilities, is_paused, update_running
     count_K = 0
     count_W = 0
     probabilities = []
     is_paused = False
+    update_running = True  # Wieder Updates erlauben
     update_chart()
 
-def toggle_pause(event):
+def toggle_pause(event=None):
     global is_paused
     is_paused = not is_paused
-    if not is_paused:
+    if not is_paused:  # Wenn wieder gestartet wird, update erneut auslösen
         update_chart()
 
 root = tk.Tk()
 root.title("Live Münzwurf Simulation")
-root.attributes("-fullscreen", True)
-root.bind("x", close_app)
+root.state("zoomed")
+
+# Key-Bindings korrigiert
+root.bind("<Escape>", close_app)  # Escape zum Beenden
 root.bind("<Configure>", resize)
 root.bind("n", switch_chart)
 root.bind("p", toggle_pause)
