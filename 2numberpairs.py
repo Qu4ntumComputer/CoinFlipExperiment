@@ -18,9 +18,9 @@ def plot_results(sums):
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(keys, [counter[k] for k in keys], color='blue', width=0.8)
     ax.set_xticks(keys)
-    ax.set_xlabel("Augensumme", fontsize=20)
+    ax.set_xlabel("Zahlenpaar", fontsize=20)
     ax.set_ylabel("Häufigkeit", fontsize=20)
-    ax.set_title("Häufigkeit der Augensummen mit zwei Würfeln", fontsize=24)
+    ax.set_title("Häufigkeit der Zahlenpaare mit zwei Würfeln", fontsize=24)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     
     return fig
@@ -91,7 +91,7 @@ results = []
 
 root = tk.Tk()
 root.title("Würfelsimulation")
-root.state("zoomed")
+root.attributes("-fullscreen", True)
 root.bind("x", close_app)
 root.bind("n", toggle_view)
 
