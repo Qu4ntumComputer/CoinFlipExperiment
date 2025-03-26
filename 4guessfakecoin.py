@@ -2,8 +2,8 @@ import random
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import subprocess                      # Hinzugefügt
-import tkinter.messagebox as mb        # Hinzugefügt
+import subprocess 
+import tkinter.messagebox as mb 
 import pyautogui
 import time
 
@@ -11,7 +11,7 @@ MANIPULATED_PROBABILITY = 0.75
 NORMAL_PROBABILITY = 0.5  
 TRANSITION_POINT = 500  # Standardwert, wird durch Benutzereingabe überschrieben
 
-fast_interval = 1  # Standardmodus (0.025s)
+fast_interval = 1 
 current_interval = fast_interval  # Startintervall
 paused = False 
 
@@ -166,6 +166,5 @@ show_value_checkbox.pack()
 
 root.bind("<p>", toggle_pause) 
 root.bind("x", destroy_root)
-root.bind("e", trigger_features)   # Neuer Hotkey "e" für beide Features
-
+root.bind("e", trigger_features)   
 root.mainloop()
