@@ -2,8 +2,8 @@ import random
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import subprocess 
-import tkinter.messagebox as mb 
+import subprocess                    
+import tkinter.messagebox as mb       
 import pyautogui
 import time
 
@@ -11,7 +11,7 @@ MANIPULATED_PROBABILITY = 0.75
 NORMAL_PROBABILITY = 0.5  
 TRANSITION_POINT = 500  # Standardwert, wird durch Benutzereingabe überschrieben
 
-fast_interval = 1 
+fast_interval = 1  
 current_interval = fast_interval  # Startintervall
 paused = False 
 
@@ -120,7 +120,7 @@ def trigger_message_box():
 
     pyautogui.hotkey("f11")
     msg_win = tk.Toplevel(root)
-    msg_win.geometry("700x150+1200+400")
+    msg_win.geometry("800x150+1000+400")
     msg_win.title("Timo & Ben")
     msg_win.attributes("-topmost", True)
     msg_label = tk.Label(msg_win, text="Vielen Dank für eure Aufmerksamkeit!", font=("Arial", 28))
@@ -148,23 +148,26 @@ count_label.pack(pady=10)
 speed_label = tk.Label(root, text="Modus: SCHNELL (1ms)", font=("Arial", 14), fg="green")
 speed_label.pack()
 
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(10, 3))
 canvas = FigureCanvasTkAgg(fig, master=root)
 canvas.get_tk_widget().pack(expand=True, fill='both')
 
 frame_bottom = tk.Frame(root)
 frame_bottom.pack(pady=10)
 
-restart_button = tk.Button(frame_bottom, text="Neustart", font=("Arial", 14), command=start_simulation)
+restart_button = tk.Button(frame_bottom, text="Neustart", font=("Arial", 14), pady=-10, command=start_simulation)
 restart_button.pack()
 
 show_line_checkbox = tk.Checkbutton(frame_bottom, text="Übergangspunkt anzeigen", variable=show_transition_line, font=("Arial", 14))
 show_line_checkbox.pack()
 
-show_value_checkbox = tk.Checkbutton(frame_bottom, text="Übergangspunkt sichtbar machen", variable=show_transition_value, font=("Arial", 14), command=toggle_visibility)
+show_value_checkbox = tk.Checkbutton(frame_bottom, text="Übergangspunkt sichtbar machen", variable=show_transition_value, font=("Arial", 14), pady=80,command=toggle_visibility)
 show_value_checkbox.pack()
+
+root.state("zoomed")
 
 root.bind("<p>", toggle_pause) 
 root.bind("x", destroy_root)
-root.bind("e", trigger_features)   
+root.bind("e", trigger_features) 
+
 root.mainloop()
